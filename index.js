@@ -14,7 +14,10 @@ var within = require('turf-within');
 var extent = require('turf-extent');
 var inside = require('turf-inside');
 
-var intersectPolygons = function(searchWithin, polygons) {
+/** @module wgs84-intersect-util */
+var WGS84IntersectUtil = exports;
+
+WGS84IntersectUtil.intersectPolygons = function(searchWithin, polygons) {
    var intersectedPolygons = [];
    var overlap;
    var overlapExtentPoints;
@@ -37,7 +40,7 @@ var intersectPolygons = function(searchWithin, polygons) {
    return intersectedPolygons;
 };
 
-var intersectLineBBox = function(line, bbox) {
+WGS84IntersectUtil.intersectLineBBox = function(line, bbox) {
    var segments = [];
    var intersection;
    var intersectionPoints = [];
@@ -61,13 +64,12 @@ var intersectLineBBox = function(line, bbox) {
    return intersectionPoints;
 };
 
-var intersectLines = function(searchWithin, lines) {
+WGS84IntersectUtil.intersectLines = function(searchWithin, lines) {
    var intersectedLines = [];
    var bbox = extent(searchWithin);
 
-   // for each given line
    for (var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
-      if (intersectLineBBox(lines[lineIndex], bbox).length) {
+      if (WGS84IntersectUtil.intersectLineBBox(lines[lineIndex], bbox).length) {
          intersectedLines.push(lines[lineIndex]);
       } else if (inside(pointOnSurface(lines[lineIndex]), bboxPolygon(bbox))) {
          intersectedLines.push(lines[lineIndex]);
