@@ -1,0 +1,41 @@
+{
+  "name": "wgs84-intersect-util",
+  "version": "0.0.1",
+  "description": "Geographic intersect utilities using WGS84 datum",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test",
+    "coverage": "istanbul cover _mocha test --recursive -- -u      exports -R spec",
+    "build": "browserify index.js > dist/bundle.js"
+  },
+  "author": "csbrandt",
+  "license": "MPL 2.0",
+  "keywords": [
+    "wgs84",
+    "intersect",
+    "geodesy",
+    "GeoJSON"
+  ],
+  "dependencies": {
+    "geojson-utils": "^1.1.0",
+    "turf-bbox-polygon": "^1.0.1",
+    "turf-explode": "^1.0.1",
+    "turf-extent": "^1.0.4",
+    "turf-featurecollection": "^1.0.1",
+    "turf-inside": "^1.1.4",
+    "turf-intersect": "^1.4.2",
+    "turf-linestring": "^1.0.2",
+    "turf-point-on-surface": "^1.1.1",
+    "turf-within": "^1.0.1"
+  },
+  "devDependencies": {
+    "browserify": "^10.2.4",
+    "grunt": "^0.4.5",
+    "grunt-contrib-coffee": "^0.13.0",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-jsbeautifier": "^0.2.10",
+    "istanbul": "^0.3.15",
+    "load-grunt-tasks": "^3.2.0",
+    "mocha": "^2.2.5"
+  }
+}
