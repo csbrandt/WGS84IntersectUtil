@@ -122,28 +122,21 @@ describe 'WGS84IntersectUtil', ->
          }
 
    describe 'intersectPolygons', ->
-     it 'should return no intersections with noIntersection polygon', ->
-       expect(WGS84IntersectUtil.intersectPolygons(noIntersection, polygons)).to.have.length(0)
+      it 'should return no intersections with noIntersection polygon', ->
+         expect(WGS84IntersectUtil.intersectPolygons(noIntersection, polygons)).to.have.length(0)
 
-     it 'should return no intersections with intersectLines polygon', ->
-       expect(WGS84IntersectUtil.intersectPolygons(intersectLines, polygons)).to.have.length(0)
+      it 'should return no intersections with intersectLines polygon', ->
+         expect(WGS84IntersectUtil.intersectPolygons(intersectLines, polygons)).to.have.length(0)
 
-     it 'should return an intersection with intersectPolygon polygon', ->
-       #expect(WGS84IntersectUtil.intersectPolygons(intersectPolygon, polygons))
-
-   describe 'intersectLineBBox', ->
-     it 'should return no intersections with noIntersection bbox', ->
-       #expect(WGS84IntersectUtil.intersectLineBBox(intersectPolygon, mtDiabloFC))
-
-     it 'should return intersections with mtDiabloBBox bbox', ->
-       #expect(WGS84IntersectUtil.intersectLineBBox(intersectPolygon, mtDiabloFC))
+      it 'should return an intersection with intersectPolygon polygon', ->
+         expect(WGS84IntersectUtil.intersectPolygons(intersectPolygon, polygons)).to.have.length(1)
 
    describe 'intersectLines', ->
-     it 'should return no intersections with noIntersection polygon', ->
-       expect(WGS84IntersectUtil.intersectLines(noIntersection, lines)).to.have.length(0)
+      it 'should return no intersections with noIntersection polygon', ->
+         expect(WGS84IntersectUtil.intersectLines(noIntersection, lines)).to.have.length(0)
 
-     it 'should return intersections with intersectLines polygon', ->
-       #expect(WGS84IntersectUtil.intersectLines(intersectLines, lines))
+      it 'should return intersections with intersectLines polygon', ->
+         expect(WGS84IntersectUtil.intersectLines(intersectLines, lines)).to.have.length(3)
 
-     it 'should return intersections with intersectPolygon polygon', ->
-       #expect(WGS84IntersectUtil.intersectLines(intersectPolygon, lines))
+      it 'should return intersections with intersectPolygon polygon', ->
+         expect(WGS84IntersectUtil.intersectLines(intersectPolygon, lines)).to.have.length(3)

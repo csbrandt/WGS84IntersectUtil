@@ -69,18 +69,20 @@
       it('should return no intersections with intersectLines polygon', function() {
         return expect(WGS84IntersectUtil.intersectPolygons(intersectLines, polygons)).to.have.length(0);
       });
-      return it('should return an intersection with intersectPolygon polygon', function() {});
-    });
-    describe('intersectLineBBox', function() {
-      it('should return no intersections with noIntersection bbox', function() {});
-      return it('should return intersections with mtDiabloBBox bbox', function() {});
+      return it('should return an intersection with intersectPolygon polygon', function() {
+        return expect(WGS84IntersectUtil.intersectPolygons(intersectPolygon, polygons)).to.have.length(1);
+      });
     });
     return describe('intersectLines', function() {
       it('should return no intersections with noIntersection polygon', function() {
         return expect(WGS84IntersectUtil.intersectLines(noIntersection, lines)).to.have.length(0);
       });
-      it('should return intersections with intersectLines polygon', function() {});
-      return it('should return intersections with intersectPolygon polygon', function() {});
+      it('should return intersections with intersectLines polygon', function() {
+        return expect(WGS84IntersectUtil.intersectLines(intersectLines, lines)).to.have.length(3);
+      });
+      return it('should return intersections with intersectPolygon polygon', function() {
+        return expect(WGS84IntersectUtil.intersectLines(intersectPolygon, lines)).to.have.length(3);
+      });
     });
   });
 
