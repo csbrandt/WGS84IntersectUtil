@@ -15,10 +15,10 @@
 <div class="header high">
     <h1>Code coverage report for <span class="entity">WGS84IntersectUtil/index.js</span></h1>
     <h2>
-        Statements: <span class="metric">91.49% <small>(43 / 47)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
-        Branches: <span class="metric">66.67% <small>(8 / 12)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
-        Functions: <span class="metric">100% <small>(3 / 3)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
-        Lines: <span class="metric">91.49% <small>(43 / 47)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">80.7% <small>(46 / 57)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">50% <small>(8 / 16)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">75% <small>(3 / 4)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">80.7% <small>(46 / 57)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
     </h2>
     <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">WGS84IntersectUtil/</a> &#187; index.js</div>
@@ -105,7 +105,23 @@
 78
 79
 80
-81</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -120,9 +136,21 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">3</span>
@@ -130,6 +158,7 @@
 <span class="cline-any cline-yes">3</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">18</span>
 <span class="cline-any cline-yes">18</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -141,6 +170,9 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -200,9 +232,21 @@ var explode = require('turf-explode');
 var within = require('turf-within');
 var extent = require('turf-extent');
 var inside = require('turf-inside');
+var reportedErrorsMap = {};
 &nbsp;
 /** @module wgs84-intersect-util */
 var WGS84IntersectUtil = exports;
+&nbsp;
+var logError = <span class="fstat-no" title="function not covered" >function(e, typeID) {</span>
+<span class="cstat-no" title="statement not covered" >   if (!typeID) {</span>
+<span class="cstat-no" title="statement not covered" >      typeID = "N/A";</span>
+   }
+<span class="cstat-no" title="statement not covered" >   if (!reportedErrorsMap[e.name + typeID]) {</span>
+<span class="cstat-no" title="statement not covered" >      var errorString = e.name + ": " + "ID: " + typeID + " " + e.message + "\n";</span>
+<span class="cstat-no" title="statement not covered" >      console.error(errorString);</span>
+<span class="cstat-no" title="statement not covered" >      reportedErrorsMap[e.name + typeID] = true;</span>
+   }
+};
 &nbsp;
 WGS84IntersectUtil.intersectPolygons = function(searchWithin, polygons) {
    var intersectedPolygons = [];
@@ -210,17 +254,21 @@ WGS84IntersectUtil.intersectPolygons = function(searchWithin, polygons) {
    var overlapExtentPoints;
 &nbsp;
    for (var polyIndex = 0; polyIndex &lt; polygons.length; polyIndex++) {
-      <span class="missing-if-branch" title="if path not taken" >I</span>if (polygons[polyIndex].properties.overlapExtent) {
-<span class="cstat-no" title="statement not covered" >         overlapExtentPoints = explode(bboxPolygon(polygons[polyIndex].properties.overlapExtent));</span>
-<span class="cstat-no" title="statement not covered" >         if (within(overlapExtentPoints, featurecollection([searchWithin])).features.length) {</span>
-<span class="cstat-no" title="statement not covered" >            intersectedPolygons.push(polygons[polyIndex]);</span>
+      try {
+         <span class="missing-if-branch" title="if path not taken" >I</span>if (polygons[polyIndex].properties.overlapExtent) {
+<span class="cstat-no" title="statement not covered" >            overlapExtentPoints = explode(bboxPolygon(polygons[polyIndex].properties.overlapExtent));</span>
+<span class="cstat-no" title="statement not covered" >            if (within(overlapExtentPoints, featurecollection([searchWithin])).features.length) {</span>
+<span class="cstat-no" title="statement not covered" >               intersectedPolygons.push(polygons[polyIndex]);</span>
+            }
+         } else {
+            overlap = intersect(searchWithin, polygons[polyIndex]);
+            if (overlap) {
+               polygons[polyIndex].properties.overlapExtent = extent(featurecollection([overlap]));
+               intersectedPolygons.push(polygons[polyIndex]);
+            }
          }
-      } else {
-         overlap = intersect(searchWithin, polygons[polyIndex]);
-         if (overlap) {
-            polygons[polyIndex].properties.overlapExtent = extent(featurecollection([overlap]));
-            intersectedPolygons.push(polygons[polyIndex]);
-         }
+      } catch (e) {
+<span class="cstat-no" title="statement not covered" >         logError(e, polygons[polyIndex].id);</span>
       }
    }
 &nbsp;
@@ -270,7 +318,7 @@ WGS84IntersectUtil.intersectLines = function(searchWithin, lines) {
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Jun 11 2015 17:25:00 GMT-0700 (PDT)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Jun 13 2015 21:01:46 GMT-0700 (PDT)</div>
 </div>
 <script src="../prettify.js"></script>
 <script>

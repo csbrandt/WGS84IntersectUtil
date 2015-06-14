@@ -14,9 +14,21 @@ var explode = require('turf-explode');
 var within = require('turf-within');
 var extent = require('turf-extent');
 var inside = require('turf-inside');
+var reportedErrorsMap = {};
 
 /** @module wgs84-intersect-util */
 var WGS84IntersectUtil = exports;
+
+var logError = function(e, typeID) {
+   if (!typeID) {
+      typeID = "N/A";
+   }
+   if (!reportedErrorsMap[e.name + typeID]) {
+      var errorString = e.name + ": " + "ID: " + typeID + " " + e.message + "\n";
+      console.error(errorString);
+      reportedErrorsMap[e.name + typeID] = true;
+   }
+};
 
 WGS84IntersectUtil.intersectPolygons = function(searchWithin, polygons) {
    var intersectedPolygons = [];
@@ -24,17 +36,21 @@ WGS84IntersectUtil.intersectPolygons = function(searchWithin, polygons) {
    var overlapExtentPoints;
 
    for (var polyIndex = 0; polyIndex < polygons.length; polyIndex++) {
-      if (polygons[polyIndex].properties.overlapExtent) {
-         overlapExtentPoints = explode(bboxPolygon(polygons[polyIndex].properties.overlapExtent));
-         if (within(overlapExtentPoints, featurecollection([searchWithin])).features.length) {
-            intersectedPolygons.push(polygons[polyIndex]);
+      try {
+         if (polygons[polyIndex].properties.overlapExtent) {
+            overlapExtentPoints = explode(bboxPolygon(polygons[polyIndex].properties.overlapExtent));
+            if (within(overlapExtentPoints, featurecollection([searchWithin])).features.length) {
+               intersectedPolygons.push(polygons[polyIndex]);
+            }
+         } else {
+            overlap = intersect(searchWithin, polygons[polyIndex]);
+            if (overlap) {
+               polygons[polyIndex].properties.overlapExtent = extent(featurecollection([overlap]));
+               intersectedPolygons.push(polygons[polyIndex]);
+            }
          }
-      } else {
-         overlap = intersect(searchWithin, polygons[polyIndex]);
-         if (overlap) {
-            polygons[polyIndex].properties.overlapExtent = extent(featurecollection([overlap]));
-            intersectedPolygons.push(polygons[polyIndex]);
-         }
+      } catch (e) {
+         logError(e, polygons[polyIndex].id);
       }
    }
 
