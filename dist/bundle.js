@@ -74,7 +74,7 @@ WGS84IntersectUtil.intersectLineBBox = function(line, bbox) {
       intersection = geojsonUtils.lineStringsIntersect(segments[c].geometry, line.geometry);
 
       if (intersection) {
-         intersectionPoints.push(intersection);
+         Array.prototype.push.apply(intersectionPoints, intersection);
       }
    }
 
