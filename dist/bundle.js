@@ -84,9 +84,12 @@ WGS84IntersectUtil.intersectLineBBox = function(line, bbox) {
 WGS84IntersectUtil.intersectLines = function(searchWithin, lines) {
    var intersectedLines = [];
    var bbox = extent(searchWithin);
+   var intersectionPoints;
 
    for (var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
-      if (WGS84IntersectUtil.intersectLineBBox(lines[lineIndex], bbox).length) {
+      intersectionPoints = WGS84IntersectUtil.intersectLineBBox(lines[lineIndex], bbox);
+      if (intersectionPoints.length) {
+         lines[lineIndex].properties.intersectionPoints = intersectionPoints;
          intersectedLines.push(lines[lineIndex]);
       } else if (inside(pointOnSurface(lines[lineIndex]), bboxPolygon(bbox))) {
          intersectedLines.push(lines[lineIndex]);
