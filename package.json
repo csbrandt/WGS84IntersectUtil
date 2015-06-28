@@ -1,6 +1,6 @@
 {
   "name": "wgs84-intersect-util",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Geographic intersect utilities using WGS84 datum",
   "main": "index.js",
   "scripts": {
