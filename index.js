@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+var cloneDeep = require('lodash.clonedeep');
 var geojsonUtils = require('geojson-utils');
 var featurecollection = require('turf-featurecollection');
 var pointOnSurface = require('turf-point-on-surface');
@@ -33,19 +34,21 @@ WGS84IntersectUtil.intersectPolygons = function(searchWithin, polygons) {
    var intersectedPolygons = [];
    var overlap;
    var overlapExtentPoints;
+   var polygon;
 
    for (var polyIndex = 0; polyIndex < polygons.length; polyIndex++) {
       try {
          if (polygons[polyIndex].properties.overlapExtent) {
             overlapExtentPoints = explode(bboxPolygon(polygons[polyIndex].properties.overlapExtent));
             if (within(overlapExtentPoints, featurecollection([searchWithin])).features.length) {
-               intersectedPolygons.push(polygons[polyIndex]);
+               intersectedPolygons.push(cloneDeep(polygons[polyIndex]));
             }
          } else {
             overlap = intersect(searchWithin, polygons[polyIndex]);
             if (overlap) {
-               polygons[polyIndex].properties.overlapExtent = extent(featurecollection([overlap]));
-               intersectedPolygons.push(polygons[polyIndex]);
+               polygon = cloneDeep(polygons[polyIndex]);
+               polygon.properties.overlapExtent = extent(featurecollection([overlap]));
+               intersectedPolygons.push(polygon);
             }
          }
       } catch (e) {
@@ -85,17 +88,20 @@ WGS84IntersectUtil.intersectLines = function(searchWithin, lines) {
    var bbox = extent(searchWithin);
    var intersectionPoints;
    var pointOnLine;
+   var line;
 
    for (var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
       intersectionPoints = WGS84IntersectUtil.intersectLineBBox(lines[lineIndex], bbox);
       if (intersectionPoints.length) {
-         lines[lineIndex].properties.intersectionPoints = intersectionPoints;
-         intersectedLines.push(lines[lineIndex]);
+         line = cloneDeep(lines[lineIndex]);
+         line.properties.intersectionPoints = intersectionPoints;
+         intersectedLines.push(line);
       } else {
          pointOnLine = pointOnSurface(lines[lineIndex]);
          if (inside(pointOnLine, bboxPolygon(bbox))) {
-            lines[lineIndex].properties.intersectionPoints = [pointOnLine.geometry];
-            intersectedLines.push(lines[lineIndex]);
+            line = cloneDeep(lines[lineIndex]);
+            line.properties.intersectionPoints = [pointOnLine.geometry];
+            intersectedLines.push(line);
          }
       }
    }

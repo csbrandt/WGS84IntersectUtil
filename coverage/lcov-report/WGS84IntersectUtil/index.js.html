@@ -15,10 +15,10 @@
 <div class="header high">
     <h1>Code coverage report for <span class="entity">WGS84IntersectUtil/index.js</span></h1>
     <h2>
-        Statements: <span class="metric">80.95% <small>(51 / 63)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">81.16% <small>(56 / 69)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         Branches: <span class="metric">50% <small>(8 / 16)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         Functions: <span class="metric">75% <small>(3 / 4)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
-        Lines: <span class="metric">80.95% <small>(51 / 63)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">81.16% <small>(56 / 69)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
     </h2>
     <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">WGS84IntersectUtil/</a> &#187; index.js</div>
@@ -129,11 +129,18 @@
 102
 103
 104
-105</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+105
+106
+107
+108
+109
+110
+111</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
@@ -164,6 +171,7 @@
 <span class="cline-any cline-yes">3</span>
 <span class="cline-any cline-yes">3</span>
 <span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3</span>
 <span class="cline-any cline-yes">18</span>
@@ -175,6 +183,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">18</span>
 <span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -216,15 +225,18 @@
 <span class="cline-any cline-yes">3</span>
 <span class="cline-any cline-yes">3</span>
 <span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3</span>
 <span class="cline-any cline-yes">15</span>
 <span class="cline-any cline-yes">15</span>
 <span class="cline-any cline-yes">6</span>
 <span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9</span>
 <span class="cline-any cline-yes">9</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -238,6 +250,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 &nbsp;
 &nbsp;
+var cloneDeep = require('lodash.clonedeep');
 var geojsonUtils = require('geojson-utils');
 var featurecollection = require('turf-featurecollection');
 var pointOnSurface = require('turf-point-on-surface');
@@ -268,19 +281,21 @@ WGS84IntersectUtil.intersectPolygons = function(searchWithin, polygons) {
    var intersectedPolygons = [];
    var overlap;
    var overlapExtentPoints;
+   var polygon;
 &nbsp;
    for (var polyIndex = 0; polyIndex &lt; polygons.length; polyIndex++) {
       try {
          <span class="missing-if-branch" title="if path not taken" >I</span>if (polygons[polyIndex].properties.overlapExtent) {
 <span class="cstat-no" title="statement not covered" >            overlapExtentPoints = explode(bboxPolygon(polygons[polyIndex].properties.overlapExtent));</span>
 <span class="cstat-no" title="statement not covered" >            if (within(overlapExtentPoints, featurecollection([searchWithin])).features.length) {</span>
-<span class="cstat-no" title="statement not covered" >               intersectedPolygons.push(polygons[polyIndex]);</span>
+<span class="cstat-no" title="statement not covered" >               intersectedPolygons.push(cloneDeep(polygons[polyIndex]));</span>
             }
          } else {
             overlap = intersect(searchWithin, polygons[polyIndex]);
             if (overlap) {
-               polygons[polyIndex].properties.overlapExtent = extent(featurecollection([overlap]));
-               intersectedPolygons.push(polygons[polyIndex]);
+               polygon = cloneDeep(polygons[polyIndex]);
+               polygon.properties.overlapExtent = extent(featurecollection([overlap]));
+               intersectedPolygons.push(polygon);
             }
          }
       } catch (e) {
@@ -320,17 +335,20 @@ WGS84IntersectUtil.intersectLines = function(searchWithin, lines) {
    var bbox = extent(searchWithin);
    var intersectionPoints;
    var pointOnLine;
+   var line;
 &nbsp;
    for (var lineIndex = 0; lineIndex &lt; lines.length; lineIndex++) {
       intersectionPoints = WGS84IntersectUtil.intersectLineBBox(lines[lineIndex], bbox);
       if (intersectionPoints.length) {
-         lines[lineIndex].properties.intersectionPoints = intersectionPoints;
-         intersectedLines.push(lines[lineIndex]);
+         line = cloneDeep(lines[lineIndex]);
+         line.properties.intersectionPoints = intersectionPoints;
+         intersectedLines.push(line);
       } else {
          pointOnLine = pointOnSurface(lines[lineIndex]);
          <span class="missing-if-branch" title="if path not taken" >I</span>if (inside(pointOnLine, bboxPolygon(bbox))) {
-<span class="cstat-no" title="statement not covered" >            lines[lineIndex].properties.intersectionPoints = [pointOnLine.geometry];</span>
-<span class="cstat-no" title="statement not covered" >            intersectedLines.push(lines[lineIndex]);</span>
+<span class="cstat-no" title="statement not covered" >            line = cloneDeep(lines[lineIndex]);</span>
+<span class="cstat-no" title="statement not covered" >            line.properties.intersectionPoints = [pointOnLine.geometry];</span>
+<span class="cstat-no" title="statement not covered" >            intersectedLines.push(line);</span>
          }
       }
    }
@@ -342,7 +360,7 @@ WGS84IntersectUtil.intersectLines = function(searchWithin, lines) {
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Jun 28 2015 14:58:41 GMT-0700 (PDT)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Jul 02 2015 22:10:57 GMT-0700 (PDT)</div>
 </div>
 <script src="../prettify.js"></script>
 <script>
