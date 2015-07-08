@@ -17,7 +17,7 @@
     "GeoJSON"
   ],
   "dependencies": {
-    "geojson-utils": "^1.1.0",
+    "geojson-utils": "git+https://github.com/csbrandt/geojson-js-utils.git#coordinate-order",
     "lodash.clonedeep": "^3.0.1",
     "turf-bbox-polygon": "^1.0.1",
     "turf-explode": "^1.0.1",
