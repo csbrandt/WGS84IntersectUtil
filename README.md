@@ -25,8 +25,7 @@ Methods
 > **line**:  *object*, GeoJSON LineString
 >
 > **bbox**:  *array*, an array of bounding box coordinates in the form: [xLow, yLow, xHigh, yHigh]
-
-
+>
 > **Returns**
 >
 > *array*,  a list of GeoJSON points that represent intersection points on `bbox`
