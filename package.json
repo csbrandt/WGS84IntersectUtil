@@ -1,8 +1,11 @@
 {
   "name": "wgs84-intersect-util",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Geographic intersect utilities using WGS84 datum",
   "main": "index.js",
+  "repository": {
+    "url": "https://github.com/csbrandt/WGS84IntersectUtil.git"
+  },
   "scripts": {
     "test": "make test",
     "coverage": "istanbul cover _mocha test --recursive -- -u      exports -R spec",
