@@ -35,22 +35,12 @@ WGS84IntersectUtil.intersectPolygons = function(searchWithin, polygons) {
    var intersectedPolygons = [];
    var overlap;
    var overlapExtentPoints;
-   var polygon;
 
    for (var polyIndex = 0; polyIndex < polygons.length; polyIndex++) {
       try {
-         if (polygons[polyIndex].properties.overlapExtent) {
-            overlapExtentPoints = explode(bboxPolygon(polygons[polyIndex].properties.overlapExtent));
-            if (within(overlapExtentPoints, featurecollection([searchWithin])).features.length) {
-               intersectedPolygons.push(cloneDeep(polygons[polyIndex]));
-            }
-         } else {
-            overlap = intersect(searchWithin, polygons[polyIndex]);
-            if (overlap) {
-               polygon = cloneDeep(polygons[polyIndex]);
-               polygon.properties.overlapExtent = extent(featurecollection([overlap]));
-               intersectedPolygons.push(polygon);
-            }
+         overlap = intersect(searchWithin, polygons[polyIndex]);
+         if (overlap) {
+            intersectedPolygons.push(cloneDeep(polygons[polyIndex]));
          }
       } catch (e) {
          logError(e, polygons[polyIndex].id);

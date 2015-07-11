@@ -1,9 +1,10 @@
 {
   "name": "wgs84-intersect-util",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Geographic intersect utilities using WGS84 datum",
   "main": "index.js",
   "repository": {
+    "type": "git",
     "url": "https://github.com/csbrandt/WGS84IntersectUtil.git"
   },
   "scripts": {
@@ -12,13 +13,17 @@
     "build": "browserify index.js > dist/bundle.js"
   },
   "author": "csbrandt",
-  "license": "MPL 2.0",
+  "license": "MPL-2.0",
   "keywords": [
     "wgs84",
     "intersect",
     "geodesy",
     "GeoJSON"
   ],
+  "bugs": {
+    "url": "https://github.com/csbrandt/WGS84IntersectUtil/issues"
+  },
+  "homepage": "https://github.com/csbrandt/WGS84IntersectUtil",
   "dependencies": {
     "geojson-utils": "git+https://github.com/csbrandt/geojson-js-utils.git#coordinate-order",
     "lodash.clonedeep": "^3.0.1",
